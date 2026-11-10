@@ -4,6 +4,10 @@
 
 # 子欣互传 · Zixin Transfer
 
+[![ci](https://github.com/fulai6688/zixin-transfer/actions/workflows/ci.yml/badge.svg)](https://github.com/fulai6688/zixin-transfer/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/fulai6688/zixin-transfer?label=release)](https://github.com/fulai6688/zixin-transfer/releases)
+[![license](https://img.shields.io/github/license/fulai6688/zixin-transfer)](LICENSE)
+[![go](https://img.shields.io/github/go-mod/go-version/fulai6688/zixin-transfer)](go.mod)
 **局域网聊天 + 文件互传，一个 Go 二进制搞定。**
 
 同一 WiFi 零服务器直连；跨网段用 6 位取件码打 WebRTC 直连；打洞失败自动降级中转。

@@ -149,3 +149,35 @@ go build ./...
 - `cloudups/iTransfer`（2016，GitHub）：纯文件三通道，无聊天室
 - 爱传 · 局域网聊天室 v2（Python + PyInstaller 分发）：聊天室 + 声音提醒 + SumatraPDF 预览
 - `Myfastools/anytransfer`（WebRTC 网页互传）：跨网 P2P 思路
+
+---
+
+## 11. 仓库与发布
+
+- 仓库：<https://github.com/fulai6688/zixin-transfer>
+- 发布页：<https://github.com/fulai6688/zixin-transfer/releases>
+- 当前版本：**v1.0.0**（首个正式版，含 5 平台产物 + SHA256SUMS）
+
+### 发布流程（照做即可）
+
+```powershell
+# 1. 改代码 → 更新 CHANGELOG.md（写清 Added/Fixed/Changed）→ 更新本文件顶部日期
+# 2. 一条命令发版（自动：构建前端→编译→提交→打 tag→推送→创建 Release）
+powershell -ExecutionPolicy Bypass -File scripts/release.ps1 -Version 1.0.1 -Notes "修复 xxx"
+# 3. 没有 gh CLI 时，tag 推送后由 .github/workflows/release.yml 出包
+```
+
+### CI / Release 事实
+
+- `ci.yml`：push/PR 触发，跑 gofmt + vet + `go test ./...` + 编译 + 冒烟（health/未知 API 404）
+- `release.yml`：`push: tags: v*` 或手动 dispatch；编译 windows/linux/darwin × amd64/arm64，
+  生成 `SHA256SUMS.txt`，`softprops/action-gh-release` 建 Release（dispatch 时是 draft，需发布）
+- **坑**：新建仓库后第一次如果 `git push -u origin main --tags` 一次性推分支+标签，
+  tag 的 workflow 可能不触发（实测）。以后单独 `git push origin vX.Y.Z` 即可；
+  或手动 dispatch：`POST /repos/{owner}/{repo}/actions/workflows/release.yml/dispatches`
+
+### 版本号规则
+
+- `VERSION` 文件是唯一真源；`scripts/build.ps1` 读它并 `-X main.version=` 注入
+- 二进制能自证身份：`zixin-transfer.exe -version` → `子欣互传 1.0.0 (windows/amd64) commit=… built=…`
+- `/api/health` 同时返回 `version` / `commit` / `builtAt`，前端设置面板可展示

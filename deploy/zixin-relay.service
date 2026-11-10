@@ -1,0 +1,32 @@
+[Unit]
+Description=子欣互传 relay (signalling + web UI)
+Documentation=https://github.com/fulai6688/zixin-transfer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zixin-transfer
+Group=zixin-transfer
+# 部署时把 -relay 改成你自己的域名（https）。这是客户端生成取件码时使用的地址。
+ExecStart=/opt/zixin-transfer/zixin-transfer \
+  -port 8080 \
+  -data /var/lib/zixin-transfer \
+  -downloads /var/lib/zixin-transfer/Downloads \
+  -alias CloudRelay \
+  -no-announce \
+  -open=false \
+  -relay https://send.example.com
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+
+# 最小权限
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/zixin-transfer
+
+[Install]
+WantedBy=multi-user.target

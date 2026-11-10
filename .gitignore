@@ -1,0 +1,24 @@
+# 构建产物（rsrc_*.syso 例外：提交进仓库，保证没有 go-winres 也能产出带图标的 exe）
+/bin/
+/dist/
+/build/*.ico
+/build/*.exe
+*.exe~
+*.test
+
+# 运行期状态（本地自测产生）
+/run/
+
+# 前端依赖与增量缓存
+node_modules/
+*.tsbuildinfo
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志
+*.log

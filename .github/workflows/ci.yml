@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: 前端类型检查 + 构建
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: gofmt
+        run: |
+          test -z "$(gofmt -l internal cmd)" || { echo '需要 gofmt：'; gofmt -l internal cmd; exit 1; }
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: 编译
+        run: go build ./...
+
+      - name: 单元测试
+        run: go test ./...
+
+      - name: 冒烟测试（启动 → /api/health → 退出）
+        run: |
+          set -e
+          go build -o /tmp/zixin ./cmd/zixin-transfer
+          /tmp/zixin -port 18080 -data /tmp/zx -downloads /tmp/zx/dl -alias CI -open=false &
+          PID=$!
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:18080/api/health > /tmp/health.json; then break; fi
+            sleep 0.25
+          done
+          cat /tmp/health.json
+          grep -q '"ok":true' /tmp/health.json
+          # 未知 API 必须 404，不能落到 SPA
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/api/does-not-exist)
+          test "$code" = "404" || { echo "期望 404，实际 $code"; exit 1; }
+          kill $PID

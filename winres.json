@@ -1,0 +1,51 @@
+{
+  "RT_MANIFEST": {
+    "1": {
+      "identity": {
+        "name": "zixin-transfer",
+        "version": "1.0.0.0"
+      },
+      "description": "子欣互传 · 局域网聊天与文件互传",
+      "execution_level": "asInvoker",
+      "dpi_awareness": true,
+      "long_path_aware": true
+    }
+  },
+  "RT_VERSION": {
+    "1": {
+      "0000": {
+        "fixed": {
+          "file_version": "1.0.0.0",
+          "product_version": "1.0.0.0"
+        },
+        "info": {
+          "0409": {
+            "CompanyName": "子欣互传",
+            "FileDescription": "子欣互传 · 局域网聊天与文件互传",
+            "FileVersion": "1.0.0",
+            "InternalName": "zixin-transfer",
+            "LegalCopyright": "MIT License",
+            "OriginalFilename": "zixin-transfer.exe",
+            "ProductName": "子欣互传",
+            "ProductVersion": "1.0.0"
+          },
+          "0804": {
+            "CompanyName": "子欣互传",
+            "FileDescription": "子欣互传 · 局域网聊天与文件互传",
+            "FileVersion": "1.0.0",
+            "InternalName": "zixin-transfer",
+            "LegalCopyright": "MIT License",
+            "OriginalFilename": "zixin-transfer.exe",
+            "ProductName": "子欣互传",
+            "ProductVersion": "1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "RT_GROUP_ICON": {
+    "APP": {
+      "0000": ["icon.ico"]
+    }
+  }
+}

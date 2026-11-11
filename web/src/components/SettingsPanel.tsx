@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import type { Settings } from '../types'
+import type { Health, Settings } from '../types'
 import { IconClose, IconFolder, IconRefresh } from './Icons'
 
 interface Props {
   open: boolean
   settings: Settings | null
+  health: Health | null
   local: boolean
   onSave: (dir: string) => Promise<void> | void
   onPick: (start: string) => Promise<string | null>
@@ -12,7 +13,7 @@ interface Props {
   onClose: () => void
 }
 
-export default function SettingsPanel({ open, settings, local, onSave, onPick, onReveal, onClose }: Props) {
+export default function SettingsPanel({ open, settings, health, local, onSave, onPick, onReveal, onClose }: Props) {
   const [dir, setDir] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
@@ -113,6 +114,20 @@ export default function SettingsPanel({ open, settings, local, onSave, onPick, o
               {err}
             </div>
           )}
+
+          <div className="section-title" style={{ padding: '16px 0 8px', borderTop: '1px solid var(--line)', marginTop: 16 }}>
+            关于
+          </div>
+          <div className="hint" style={{ lineHeight: 1.9 }}>
+            版本 <span className="mono">{health?.version ?? '—'}</span>
+            {health?.commit && health.commit !== 'none' ? <> · 提交 <span className="mono">{health.commit.slice(0, 7)}</span></> : null}
+            {health?.builtAt && health.builtAt !== 'unknown' ? <> · 构建 <span className="mono">{health.builtAt}</span></> : null}
+            <br />
+            本机地址 <span className="mono">{health?.address ? `http://${health.address}:${health.port}` : '—'}</span>
+            {health?.relay ? <><br />中转节点 <span className="mono">{health.relay}</span></> : null}
+            <br />
+            看左上角是否显示「子欣互传」，就知道浏览器有没有拿到新版本。
+          </div>
         </div>
 
         <div className="modal__foot">

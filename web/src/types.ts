@@ -16,6 +16,9 @@ export interface Health {
   local?: boolean
   /** 本机 LAN 地址：给别的设备用的下载地址必须基于它 */
   address?: string
+  /** 构建元数据，用于排查"你跑的是哪一版" */
+  commit?: string
+  builtAt?: string
 }
 
 /** A peer discovered on the local network via mDNS or the subnet scan. */

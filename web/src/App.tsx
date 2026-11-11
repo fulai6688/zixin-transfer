@@ -851,6 +851,7 @@ export default function App() {
       <SettingsPanel
         open={settingsOpen}
         settings={settings}
+        health={health}
         local={health?.local === true}
         onSave={saveSettings}
         onPick={pickFolder}

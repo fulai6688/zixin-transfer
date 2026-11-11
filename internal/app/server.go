@@ -251,8 +251,16 @@ func spaHandler(static fs.FS) http.Handler {
 		}
 		if f, err := static.Open(p); err == nil {
 			_ = f.Close()
-			if strings.HasPrefix(p, "_next/static/") || strings.HasSuffix(p, ".js") || strings.HasSuffix(p, ".css") {
+			switch {
+			case p == "index.html" || p == "sw.js":
+				// 入口脚本与 service worker 必须每次回服务器校验，
+				// 否则升级后浏览器会一直用旧页面。
+				w.Header().Set("Cache-Control", "no-cache, must-revalidate")
+			case strings.HasSuffix(p, ".js") || strings.HasSuffix(p, ".css"):
+				// 文件名里带 hash，内容变了文件名就变了，可以长缓存
 				w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+			default:
+				w.Header().Set("Cache-Control", "public, max-age=3600")
 			}
 			fileServer.ServeHTTP(w, r)
 			return
@@ -264,6 +272,7 @@ func spaHandler(static fs.FS) http.Handler {
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-cache, must-revalidate")
 		_, _ = w.Write(b)
 	})
 }

@@ -704,7 +704,7 @@ export default function App() {
         </div>
         <div>
           <div className="brand__name">子欣互传</div>
-          <div className="brand__tag">our own transfer</div>
+          <div className="brand__tag">局域网聊天 · 文件互传</div>
         </div>
       </div>
 

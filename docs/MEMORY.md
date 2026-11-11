@@ -40,7 +40,9 @@
 5. **设备指纹持久化**（`device.json`）：每次启动随机生成会让备注与"已知设备"全部漂移（§6 #5）。
 6. **接收目录、设备表、聊天历史、已接收索引都要持久化**（`settings.json` /
    `trusted.json` / `chat.json` / `received.json`），重启不丢是产品承诺。
-7. **本机专属操作只认 loopback**：`reveal`/`open`/`pick-folder` 三个接口必须
+7. **前端升级必须立刻生效**：`service worker` 对导航请求要用**网络优先**，`sw.js` 与
+   `index.html` 必须 `no-cache`；否则升级后用户看到的是上一版界面（曾经被当成"没改"）。
+8. **本机专属操作只认 loopback**：`reveal`/`open`/`pick-folder` 三个接口必须
    `isLoopback` 校验 + 路径白名单，否则任意网页都能开你机器上的文件（§6 #10）。
 
 ## 4. 目录地图
@@ -104,6 +106,7 @@ go build -ldflags="-s -w" -o dist/zixin-transfer-linux-amd64 ./cmd/zixin-transfe
 | 10 | 打开文件/目录无来源校验 | 任意网页可开本机文件 | `requireLocal` + 路径白名单 | localops.go / settings_api.go |
 | 11 | 扫描端口写死 8080/8081 | 8092/8084 的实例发现不到 | 扫 8080–8085 + 已知端口 | scan.go |
 | 12 | 相对路径进界面 | 设置面板显示 `.\run\a\Downloads` | 启动时 `filepath.Abs` | server.go |
+| 13 | SW 对页面导航缓存优先 | 升级后用户一直看到旧界面/旧品牌（右上角是新数据、左上角是旧名字） | 导航网络优先 + `sw.js`/`index.html` no-cache + 新 SW `skipWaiting` 接管后自动刷新 | sw.js / main.tsx / server.go |
 
 ## 7. 验证清单（每次发版跑一遍）
 

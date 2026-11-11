@@ -174,11 +174,10 @@ textarea {
 }
 
 .brand__tag {
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text-mute);
-  letter-spacing: 0.9px;
-  text-transform: uppercase;
-  margin-top: -3px;
+  letter-spacing: 0.5px;
+  margin-top: -2px;
 }
 
 /* ============================ topbar ============================ */

@@ -3,6 +3,14 @@
 本项目遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)，
 变更记录格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
 
+## [1.0.1] - 2026-11-11
+
+### 修复
+- **升级后仍显示旧界面/旧品牌**：service worker 之前对页面导航采用缓存优先，
+  浏览器升级后一直拿上一版的 index.html（表现为左上角还是旧名字）。
+  改为：导航请求网络优先、`sw.js` 与 `index.html` 一律 `no-cache`、
+  新 SW 就绪即 `skipWaiting` 接管并自动刷新一次。
+- 品牌副标题仍为英文 `our own transfer`（CSS 转大写显示成 `OUR OWN TRANSFER`），改为「局域网聊天 · 文件互传」。
 ## [Unreleased]
 
 ### 计划中

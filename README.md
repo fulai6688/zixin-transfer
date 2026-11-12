@@ -70,7 +70,20 @@ powershell -File scripts/build.ps1
 
 也可以直接双击 `启动 子欣互传.cmd`。
 
-### 手机 / 其它设备
+### Android 手机（APK）
+
+仓库自带一个 44 KB 的 WebView 客户端壳（`android/`），补上了浏览器做不到的三件事：
+记住服务器地址、聊天室点文件能真的落盘到手机「下载」、发文件时调起系统文件选择器。
+
+```powershell
+powershell -File android/build-apk.ps1          # 产物 dist/zixin-transfer-android.apk
+adb install -r dist/zixin-transfer-android.apk  # 或用手机点开安装
+adb shell am start -n cn.zixin.transfer/.MainActivity -e base 192.168.1.20:8080
+```
+
+手机端不跑服务，只是这台电脑 UI 的客户端；电脑上的节点要先运行。
+
+### 手机 / 其它设备（免安装）
 
 浏览器打开 `http://<这台电脑的IP>:8080`，或打开云端地址，**添加到主屏幕**即得 App 体验。
 

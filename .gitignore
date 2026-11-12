@@ -20,5 +20,11 @@ node_modules/
 Thumbs.db
 desktop.ini
 
+# Android 签名与中间产物
+/android/build/
+*.jks
+*.keystore
+android/local.properties
+
 # 日志
 *.log
